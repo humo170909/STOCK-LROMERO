@@ -96,6 +96,7 @@ export type CrearCotizacionPayload = {
   lineas: LineaCotizacion[];
   fechaVencimiento: string;
   condiciones?: string;
+  movilidad?: number;
 };
 
 export type ConvertirCotizacionPayload = {

@@ -22,6 +22,8 @@ function cotizacionDesdeFila(row: Database["public"]["Tables"]["cotizaciones"]["
     descuento: row.descuento,
     impuesto: row.impuesto,
     total: row.total,
+    // La movilidad no tiene columna propia: es lo que el total suma por encima de neto + impuesto.
+    movilidad: Math.max(0, Math.round((row.total - (row.subtotal - row.descuento + row.impuesto)) * 100) / 100),
     estado: row.estado,
     ventaId: row.venta_id ?? undefined,
   };
@@ -158,7 +160,8 @@ export const cotizacionesService: CotizacionesService = {
     }
     const subtotalNeto = subtotalBruto - descuentoTotal;
     const impuesto = Math.round(subtotalNeto * empresa.impuesto * 100) / 100;
-    const total = Math.round((subtotalNeto + impuesto) * 100) / 100;
+    const movilidad = Number.isFinite(payload.movilidad) ? Math.max(0, Math.round((payload.movilidad ?? 0) * 100) / 100) : 0;
+    const total = Math.round((subtotalNeto + impuesto + movilidad) * 100) / 100;
     const numero = `COT-${new Date().getFullYear()}-${Date.now().toString(36).toUpperCase()}`;
 
     const { data: cotizacion, error } = await supabase

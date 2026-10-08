@@ -84,6 +84,8 @@ export type Cotizacion = {
   descuento: number;
   impuesto: number;
   total: number;
+  /** Cargo de movilidad incluido en el total (no lleva impuesto). */
+  movilidad?: number;
   estado: EstadoCotizacion;
   ventaId?: string;
 };

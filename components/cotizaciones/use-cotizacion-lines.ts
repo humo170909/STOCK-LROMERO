@@ -10,6 +10,8 @@ export type LineaCotizacionForm = {
 
 export function useCotizacionLines() {
   const [lineas, setLineas] = useState<LineaCotizacionForm[]>([]);
+  const [movilidadTexto, setMovilidadTexto] = useState("0");
+  const movilidad = Math.max(0, Math.round((Number(movilidadTexto) || 0) * 100) / 100);
   const tasaImpuesto = useAppStore((s) => s.configuracionEmpresa.impuesto);
 
   const agregar = (producto: Producto) => {
@@ -30,14 +32,17 @@ export function useCotizacionLines() {
   };
 
   const quitar = (productoId: string) => setLineas((actuales) => actuales.filter((l) => l.producto.id !== productoId));
-  const vaciar = () => setLineas([]);
+  const vaciar = () => {
+    setLineas([]);
+    setMovilidadTexto("0");
+  };
 
   const totales = useMemo(() => {
     const subtotal = lineas.reduce((acc, l) => acc + l.producto.precioVenta * l.cantidad - l.descuento, 0);
     const impuesto = Math.round(subtotal * tasaImpuesto * 100) / 100;
-    const total = Math.round((subtotal + impuesto) * 100) / 100;
+    const total = Math.round((subtotal + impuesto + movilidad) * 100) / 100;
     return { subtotal: Math.round(subtotal * 100) / 100, impuesto, total };
-  }, [lineas, tasaImpuesto]);
+  }, [lineas, tasaImpuesto, movilidad]);
 
-  return { lineas, agregar, actualizarCantidad, actualizarDescuento, quitar, vaciar, totales };
+  return { lineas, agregar, actualizarCantidad, actualizarDescuento, quitar, vaciar, totales, movilidad, movilidadTexto, setMovilidadTexto };
 }

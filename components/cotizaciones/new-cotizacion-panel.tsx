@@ -66,6 +66,7 @@ export function NewCotizacionPanel({
         clienteId,
         fechaVencimiento: new Date(`${fechaVencimiento}T23:59:59`).toISOString(),
         condiciones: condiciones.trim() || undefined,
+        movilidad: lineas.movilidad,
         lineas: lineas.lineas.map((l) => ({ productoId: l.producto.id, cantidad: l.cantidad, descuento: l.descuento })),
       });
       const nombreCliente = clientes.find((c) => c.id === clienteId)?.nombre ?? "Cliente";
@@ -186,6 +187,20 @@ export function NewCotizacionPanel({
               <span className="font-medium text-navy-900"><CurrencyDisplay value={lineas.totales.impuesto} /></span>
               </div>
             ) : null}
+            <div className="flex items-center justify-between">
+              <label htmlFor="movilidad" className="text-slate-500">Movilidad</label>
+              <input
+                id="movilidad"
+                type="number"
+                min={0}
+                step="0.01"
+                inputMode="decimal"
+                value={lineas.movilidadTexto}
+                onChange={(e) => lineas.setMovilidadTexto(e.target.value)}
+                onFocus={(e) => e.target.select()}
+                className="h-8 w-28 rounded-md border border-slate-200 bg-white px-2 text-right font-medium text-navy-900 outline-none focus-visible:border-brand-500"
+              />
+            </div>
             <div className="flex justify-between border-t border-slate-200 pt-1.5 text-sm">
               <span className="font-semibold text-navy-900">Total</span>
               <span className="font-semibold text-navy-900"><CurrencyDisplay value={lineas.totales.total} /></span>

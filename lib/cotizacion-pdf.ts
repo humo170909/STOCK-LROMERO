@@ -200,10 +200,11 @@ export async function generarCotizacionPdf(datos: DatosCotizacionPdf, empresa: C
   const filasTotales: Array<[string, string]> = [["Subtotal", dinero(cotizacion.subtotal)]];
   if (cotizacion.descuento > 0) filasTotales.push(["Descuento", `- ${dinero(cotizacion.descuento)}`]);
   if (cotizacion.impuesto > 0) filasTotales.push([etiquetaImpuesto, dinero(cotizacion.impuesto)]);
+  if ((cotizacion.movilidad ?? 0) > 0) filasTotales.push(["Movilidad", dinero(cotizacion.movilidad ?? 0)]);
 
   // Franja: imagen de cuenta (izquierda) + cuadro de resumen enmarcado (derecha).
   const lado = cuenta ? 62 : 0;
-  const altoCuadro = Math.max(lado, 52);
+  const altoCuadro = Math.max(lado, 52, filasTotales.length > 3 ? 70 : 0);
   asegurarEspacio(altoCuadro + 14);
   const yFranja = y;
   if (cuenta) {

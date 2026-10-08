@@ -130,6 +130,12 @@ export function DetailPanel({
               <dd className="font-medium text-navy-900"><CurrencyDisplay value={datos.cotizacion.impuesto} /></dd>
               </div>
             ) : null}
+            {(datos.cotizacion.movilidad ?? 0) > 0 ? (
+              <div className="flex items-center justify-between">
+                <dt className="text-slate-500">Movilidad</dt>
+                <dd className="font-medium text-navy-900"><CurrencyDisplay value={datos.cotizacion.movilidad ?? 0} /></dd>
+              </div>
+            ) : null}
             <div className="flex items-center justify-between text-sm">
               <dt className="font-semibold text-navy-900">Total</dt>
               <dd className="font-display text-base font-semibold text-navy-900"><CurrencyDisplay value={datos.cotizacion.total} /></dd>
