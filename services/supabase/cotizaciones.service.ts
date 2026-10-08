@@ -3,7 +3,6 @@
 // mueve stock ni caja) — ver 22_rls.sql. Solo la conversión a venta exige la RPC
 // fn_convertir_cotizacion, porque esa sí mueve stock y caja.
 import { createClient } from "@/lib/supabase/client";
-import { useAppStore } from "@/store/app-store";
 import { empresaActual, leerTodo, sedeActual, textoParaFiltro } from "./_shared";
 import type { CotizacionesService } from "../cotizaciones.types";
 import type { Cotizacion, DetalleCotizacion } from "@/types";
@@ -212,8 +211,12 @@ export const cotizacionesService: CotizacionesService = {
     if (error) throw error;
     // Misma fórmula que fn_registrar_venta: se convierte al precio vigente de cada producto.
     const base = data.reduce((acc, d) => acc + (d.productos?.precio_venta ?? 0) * d.cantidad - d.descuento, 0);
-    const tasa = useAppStore.getState().configuracionEmpresa.impuesto;
-    const impuesto = Math.round(base * tasa * 100) / 100;
+    // La tasa se lee de la base (la misma que usa fn_registrar_venta), no del estado local,
+    // para que el total mostrado coincida exactamente con el que valida el servidor.
+    const empresaId = await empresaActual(supabase);
+    const { data: empresa, error: empresaError } = await supabase.from("empresas").select("impuesto").eq("id", empresaId).single();
+    if (empresaError) throw empresaError;
+    const impuesto = Math.round(base * empresa.impuesto * 100) / 100;
     return Math.round((base + impuesto) * 100) / 100;
   },
 
@@ -224,7 +227,8 @@ export const cotizacionesService: CotizacionesService = {
       p_medio_pago: payload.medioPago,
       p_pagos: payload.pagos && payload.pagos.length > 1 ? payload.pagos.map((p) => ({ medio_pago: p.medioPago, monto: p.monto })) : null,
     });
-    if (error) throw error;
+    // Error de Postgres (stock, caja cerrada, pagos que no suman…): se muestra su mensaje real.
+    if (error) throw new Error(error.message);
     return {
       id: data.id,
       numero: data.numero,
