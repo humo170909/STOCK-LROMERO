@@ -42,6 +42,7 @@ Thumbs.db
 .cache/
 # TypeScript generado
 *.tsbuildinfo
+next-env.d.ts
 
 # Documentación interna
 AGENTS.md
