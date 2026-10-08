@@ -383,6 +383,12 @@ export interface Database {
           },
         ];
       };
+      metas_ventas: {
+        Row: { id: string; empresa_id: string; anio: number; mes: number; meta: number; created_at: string; updated_at: string };
+        Insert: { empresa_id: string; anio: number; mes: number; meta: number };
+        Update: { meta?: number };
+        Relationships: [];
+      };
       backups: {
         Row: {
           id: string; empresa_id: string; tipo: "manual" | "automatico"; formatos: string[];

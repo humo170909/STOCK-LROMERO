@@ -7,14 +7,16 @@ import { SistemaTab } from "./sistema-tab";
 import { SedesTab } from "./sedes-tab";
 import { ComprobantesTab } from "./comprobantes-tab";
 import { BackupsTab } from "./backups-tab";
+import { MetasTab } from "./metas-tab";
 
-type TabId = "empresa" | "sistema" | "sedes" | "comprobantes" | "backups";
+type TabId = "empresa" | "sistema" | "sedes" | "comprobantes" | "backups" | "metas";
 
 const TABS: { id: TabId; label: string }[] = [
   { id: "empresa", label: "Empresa" },
   { id: "sistema", label: "Sistema" },
   { id: "sedes", label: "Sedes" },
   { id: "comprobantes", label: "Numeración" },
+  { id: "metas", label: "Metas" },
   { id: "backups", label: "Backups" },
 ];
 
@@ -48,6 +50,7 @@ export function ConfiguracionView() {
       {tab === "sistema" ? <SistemaTab /> : null}
       {tab === "sedes" ? <SedesTab /> : null}
       {tab === "comprobantes" ? <ComprobantesTab /> : null}
+      {tab === "metas" ? <MetasTab /> : null}
       {tab === "backups" ? <BackupsTab /> : null}
     </div>
   );

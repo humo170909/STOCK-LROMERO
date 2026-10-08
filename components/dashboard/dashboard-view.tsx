@@ -17,6 +17,7 @@ import { CriticalStock } from "./critical-stock";
 import { RecentSales } from "./recent-sales";
 import { RecentActivity } from "./recent-activity";
 import { CashSummary } from "./cash-summary";
+import { MetaVentasCard } from "./meta-ventas-card";
 
 function DashboardSkeleton() {
   return (
@@ -87,6 +88,7 @@ export function DashboardView() {
       ) : data ? (
         <>
           <KpiRow data={data} />
+          <MetaVentasCard />
           <SecondaryStats data={data} />
           <div className="grid grid-cols-1 gap-4 desk:grid-cols-[2fr_1fr]">
             <SalesProfitChart serie={data.serieVentas} />

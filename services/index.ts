@@ -27,3 +27,5 @@ export { usuariosService } from "./supabase/usuarios.service";
 export * from "./usuarios.types";
 export { configuracionService } from "./supabase/configuracion.service";
 export * from "./configuracion.types";
+export { metasService } from "./supabase/metas.service";
+export * from "./metas.types";

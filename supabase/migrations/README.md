@@ -36,6 +36,7 @@
 33_exigir_caja_abierta.sql
 34_pago_mixto.sql
 36_backups.sql
+37_metas_ventas.sql
 ```
 
 Cada archivo es autocontenido: copia su contenido completo y pégalo en el SQL Editor,
